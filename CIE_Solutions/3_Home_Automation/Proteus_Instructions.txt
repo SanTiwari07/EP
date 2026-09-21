@@ -1,0 +1,24 @@
+PROTEUS 8 PROFESSIONAL SIMULATION SETUP
+---------------------------------------
+
+To run this simulation in Proteus 8 Professional, follow these steps:
+
+1. Open Proteus 8 Professional and click on 'New Project'.
+2. Proceed through the wizard, selecting 'DEFAULT' schematic size.
+3. If prompted to create a PCB, choose 'Do not create a PCB layout'.
+4. If prompted to create Firmware, choose 'No Firmware Project' (we will attach the hex file manually).
+5. In the schematic capture window, press 'P' to pick devices.
+6. Search and add the following parts:
+   - PIC18F4550
+   - LOGICSTATE (or BUTTON + Resistors for input)
+   - RELAY
+   - NPN Transistor (e.g., 2N2222) or ULN2003
+   - LAMP (or MOTOR) to simulate appliance
+7. Place the PIC18F4550 on the workspace.
+8. Wire the components as per the 'Interfacing Diagram' description in the Report.md file.
+9. To program the PIC in Proteus:
+   - You need to compile the provided `main.c` file using MPLAB X IDE with XC8 compiler to generate a `.hex` file.
+   - Double-click the PIC18F4550 in Proteus.
+   - Under 'Program File', browse and select the generated `.hex` file.
+   - Set 'Processor Clock Frequency' to 8MHz.
+10. Click the 'Play' button at the bottom left to start the simulation.

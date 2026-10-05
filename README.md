@@ -10,7 +10,7 @@ Semester: 5 | Credits: 1 | Teaching Scheme: P: 2 Hrs./Week | Examination Scheme:
 
 Official curriculum outline, course objectives, outcomes, and laboratory contents:
 
-![Course Syllabus](assets/course_contents.png)
+![Course Syllabus](assets/syllabus.png)
 
 ---
 
@@ -143,7 +143,7 @@ mplink.exe /p18F4550 "..\rm18f4550.lkr" "exp3.o" /u_CRUNTIME /z__MPLAB_BUILD=1 /
 ```text
 EPLabWork/
 ├── assets/
-│   └── course_contents.png
+│   └── syllabus.png
 ├── Assignment1/
 │   ├── chasing.c
 │   ├── toggle.c

@@ -204,4 +204,4 @@ EPLabWork/
 
 - **Institution:** Department of Electronics & Telecommunication Engineering
 - **Laboratory Course:** Embedded Processors Laboratory (EP Lab)
-- **Repository:** SanTiwari07 / EPCIE
+- **Repository:** SanTiwari07 / EP (https://github.com/SanTiwari07/EP)

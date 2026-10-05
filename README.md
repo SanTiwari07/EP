@@ -25,8 +25,8 @@ All implementations follow strict embedded engineering standards:
 - Calibrated hardware delays and calculation formulas included in comments.
 
 > [!TIP]
-> **Interactive Circuit Schematics & Simulation Tool:**  
-> Open **[`interfacing_diagrams.html`](interfacing_diagrams.html)** in any browser to inspect interactive, publication-quality vector schematics and run live logic simulations for Experiments 1 through 5.
+> **Deployable Laboratory Web Portal & Schematics Tool:**  
+> Open **[`index.html`](index.html)** in any browser or deploy directly via GitHub Pages / Netlify / Vercel to explore the complete interactive laboratory portal, publication-quality vector schematics, live hardware simulators, mathematical derivations, and embedded C source code for all experiments. (Also available as standalone schematics in **[`interfacing_diagrams.html`](interfacing_diagrams.html)**).
 
 ---
 

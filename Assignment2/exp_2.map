@@ -1,5 +1,5 @@
 MPLINK 5.00, LINKER
-Linker Map File - Created Sun Sep 06 19:39:16 2026
+Linker Map File - Created Mon Oct 05 20:17:21 2026
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -9,18 +9,18 @@ Linker Map File - Created Sun Sep 06 19:39:16 2026
    _HIGH_INTERRUPT_VECTOR       code   0x001008    program   0x000002
     _LOW_INTERRUPT_VECTOR       code   0x001018    program   0x000002
                    .cinit    romdata   0x00102a    program   0x000002
-             .code_exp2.o       code   0x00102c    program   0x0000f2
-               _cinit_scn       code   0x00111e    program   0x00009e
-                    .code       code   0x0011bc    program   0x000020
-             _startup_scn       code   0x0011dc    program   0x00001c
-           .code___init.o       code   0x0011f8    program   0x000002
-          .idata_exp2.o_i    romdata   0x0011fa    program   0x000000
-          .romdata_exp2.o    romdata   0x0011fa    program   0x000000
-            .code_c018i.o       code   0x0011fa    program   0x000000
-         .romdata_c018i.o    romdata   0x0011fa    program   0x000000
-        .idata___init.o_i    romdata   0x0011fa    program   0x000000
-        .romdata___init.o    romdata   0x0011fa    program   0x000000
-         .idata_c018i.o_i    romdata   0x0011fa    program   0x000000
+             .code_exp2.o       code   0x00102c    program   0x0000d2
+               _cinit_scn       code   0x0010fe    program   0x00009e
+                    .code       code   0x00119c    program   0x000020
+             _startup_scn       code   0x0011bc    program   0x00001c
+           .code___init.o       code   0x0011d8    program   0x000002
+          .idata_exp2.o_i    romdata   0x0011da    program   0x000000
+          .romdata_exp2.o    romdata   0x0011da    program   0x000000
+            .code_c018i.o       code   0x0011da    program   0x000000
+         .romdata_c018i.o    romdata   0x0011da    program   0x000000
+        .idata___init.o_i    romdata   0x0011da    program   0x000000
+        .romdata___init.o    romdata   0x0011da    program   0x000000
+         .idata_c018i.o_i    romdata   0x0011da    program   0x000000
                  .tmpdata      udata   0x000000       data   0x000004
                 MATH_DATA      udata   0x000004       data   0x000002
            .udata_c018i.o      udata   0x000060       data   0x00000a
@@ -41,8 +41,8 @@ Linker Map File - Created Sun Sep 06 19:39:16 2026
                             0x001000    0x001005      
                             0x001008    0x001009      
                             0x001018    0x001019      
-                            0x00102a    0x0011f9      
-            480 out of 33048 program addresses used, program memory utilization is 1%
+                            0x00102a    0x0011d9      
+            448 out of 33048 program addresses used, program memory utilization is 1%
 
 
 
@@ -51,28 +51,29 @@ Linker Map File - Created Sun Sep 06 19:39:16 2026
                 ---------  ---------  ---------  --------- ---------                
        ___return_lbl00000   0x000004    program     static                          
        ___return_lbl00000   0x001004    program     static                          
-       ___return_lbl00001   0x0011f6    program     static                          
-       ___return_lbl00002   0x0011ba    program     static                          
-                   __init   0x0011f8    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\stdclib\__init.c
-            __zero_memory   0x0011bc    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                _do_cinit   0x00111e    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
+       ___return_lbl00001   0x0011d6    program     static                          
+       ___return_lbl00002   0x00119a    program     static                          
+                   __init   0x0011d8    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\stdclib\__init.c
+                   __pa_0   0x0010f0    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\exp2.c
+            __zero_memory   0x00119c    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                _do_cinit   0x0010fe    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
                    _entry   0x000000    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
-                   _reset   0x001000    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\vector_relocate.h
-                 _startup   0x0011dc    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
-                compare_l   0x0011d2    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                copy_loop   0x001190    program     static                          
-            copy_one_byte   0x001196    program     static                          
-                    delay   0x00102c    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\exp2.c
-                     done   0x0011ba    program     static                          
-             done_copying   0x0011a4    program     static                          
-                 high_ISR   0x001008    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\vector_relocate.h
-                     loop   0x0011ec    program     static                          
-                   loop_h   0x0011ca    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                   loop_l   0x0011d4    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                  low_ISR   0x001018    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\vector_relocate.h
-                     main   0x0010a2    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\exp2.c
-                     test   0x001138    program     static                          
-               zero_block   0x0011ca    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                   _reset   0x001000    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\vector_relocate.h
+                 _startup   0x0011bc    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
+                compare_l   0x0011b2    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                copy_loop   0x001170    program     static                          
+            copy_one_byte   0x001176    program     static                          
+                    delay   0x00102c    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\exp2.c
+                     done   0x00119a    program     static                          
+             done_copying   0x001184    program     static                          
+                 high_ISR   0x001008    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\vector_relocate.h
+                     loop   0x0011cc    program     static                          
+                   loop_h   0x0011aa    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                   loop_l   0x0011b4    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                  low_ISR   0x001018    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\vector_relocate.h
+                     main   0x0010a2    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\exp2.c
+                     test   0x001118    program     static                          
+               zero_block   0x0011aa    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
                    ADCON0   0x000fc2       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
                ADCON0bits   0x000fc2       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
                    ADCON1   0x000fc1       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
@@ -326,7 +327,7 @@ Linker Map File - Created Sun Sep 06 19:39:16 2026
                      WREG   0x000fe8       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
                 __FPFLAGS   0x000005       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm
             __FPFLAGSbits   0x000005       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm
-                  __tmp_0   0x000000       data     static C:\Users\sansk\Desktop\Electronics\MPLab\linker\exp2.c
+                  __tmp_0   0x000000       data     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\exp2.c
                 curr_byte   0x000063       data     static E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
                curr_entry   0x000065       data     static E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
                  data_ptr   0x000067       data     static E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
@@ -339,29 +340,30 @@ Linker Map File - Created Sun Sep 06 19:39:16 2026
                 ---------  ---------  ---------  --------- ---------                
                    _entry   0x000000    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
        ___return_lbl00000   0x000004    program     static                          
-                   _reset   0x001000    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\vector_relocate.h
+                   _reset   0x001000    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\vector_relocate.h
        ___return_lbl00000   0x001004    program     static                          
-                 high_ISR   0x001008    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\vector_relocate.h
-                  low_ISR   0x001018    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\vector_relocate.h
-                    delay   0x00102c    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\exp2.c
-                     main   0x0010a2    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\linker\exp2.c
-                _do_cinit   0x00111e    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
-                     test   0x001138    program     static                          
-                copy_loop   0x001190    program     static                          
-            copy_one_byte   0x001196    program     static                          
-             done_copying   0x0011a4    program     static                          
-                     done   0x0011ba    program     static                          
-       ___return_lbl00002   0x0011ba    program     static                          
-            __zero_memory   0x0011bc    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                   loop_h   0x0011ca    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-               zero_block   0x0011ca    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                compare_l   0x0011d2    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                   loop_l   0x0011d4    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                 _startup   0x0011dc    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
-                     loop   0x0011ec    program     static                          
-       ___return_lbl00001   0x0011f6    program     static                          
-                   __init   0x0011f8    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\stdclib\__init.c
-                  __tmp_0   0x000000       data     static C:\Users\sansk\Desktop\Electronics\MPLab\linker\exp2.c
+                 high_ISR   0x001008    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\vector_relocate.h
+                  low_ISR   0x001018    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\vector_relocate.h
+                    delay   0x00102c    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\exp2.c
+                     main   0x0010a2    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\exp2.c
+                   __pa_0   0x0010f0    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\exp2.c
+                _do_cinit   0x0010fe    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
+                     test   0x001118    program     static                          
+                copy_loop   0x001170    program     static                          
+            copy_one_byte   0x001176    program     static                          
+             done_copying   0x001184    program     static                          
+                     done   0x00119a    program     static                          
+       ___return_lbl00002   0x00119a    program     static                          
+            __zero_memory   0x00119c    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                   loop_h   0x0011aa    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+               zero_block   0x0011aa    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                compare_l   0x0011b2    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                   loop_l   0x0011b4    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                 _startup   0x0011bc    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
+                     loop   0x0011cc    program     static                          
+       ___return_lbl00001   0x0011d6    program     static                          
+                   __init   0x0011d8    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\stdclib\__init.c
+                  __tmp_0   0x000000       data     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment2\linker\exp2.c
                      SIGN   0x000004       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm
                 __FPFLAGS   0x000005       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm
             __FPFLAGSbits   0x000005       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm

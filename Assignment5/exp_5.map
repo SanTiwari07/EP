@@ -1,24 +1,25 @@
 MPLINK 5.00, LINKER
-Linker Map File - Created Mon Oct 05 09:02:22 2026
+Linker Map File - Created Mon Oct 05 20:18:21 2026
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                _entry_scn       code   0x000000    program   0x000006
+  _RESET_INTERRUPT_VECTOR       code   0x001000    program   0x000006
                    .cinit    romdata   0x00102a    program   0x000002
-             .code_exp5.o       code   0x00102c    program   0x0001e2
-               _cinit_scn       code   0x00120e    program   0x00009e
-                    .code       code   0x0012ac    program   0x000020
-             _startup_scn       code   0x0012cc    program   0x00001c
-           .code___init.o       code   0x0012e8    program   0x000002
-         .idata_c018i.o_i    romdata   0x0012ea    program   0x000000
-         .romdata_c018i.o    romdata   0x0012ea    program   0x000000
-            .code_c018i.o       code   0x0012ea    program   0x000000
-          .idata_exp5.o_i    romdata   0x0012ea    program   0x000000
-          .romdata_exp5.o    romdata   0x0012ea    program   0x000000
-             .stringtable    romdata   0x0012ea    program   0x000000
-        .idata___init.o_i    romdata   0x0012ea    program   0x000000
-        .romdata___init.o    romdata   0x0012ea    program   0x000000
+             .code_exp5.o       code   0x00102c    program   0x000126
+               _cinit_scn       code   0x001152    program   0x00009e
+                    .code       code   0x0011f0    program   0x000020
+             _startup_scn       code   0x001210    program   0x00001c
+             .stringtable    romdata   0x00122c    program   0x00000c
+           .code___init.o       code   0x001238    program   0x000002
+         .idata_c018i.o_i    romdata   0x00123a    program   0x000000
+         .romdata_c018i.o    romdata   0x00123a    program   0x000000
+            .code_c018i.o       code   0x00123a    program   0x000000
+          .idata_exp5.o_i    romdata   0x00123a    program   0x000000
+          .romdata_exp5.o    romdata   0x00123a    program   0x000000
+        .idata___init.o_i    romdata   0x00123a    program   0x000000
+        .romdata___init.o    romdata   0x00123a    program   0x000000
                  .tmpdata      udata   0x000000       data   0x000004
                 MATH_DATA      udata   0x000004       data   0x000002
            .udata_c018i.o      udata   0x000060       data   0x00000a
@@ -36,37 +37,50 @@ Linker Map File - Created Mon Oct 05 09:02:22 2026
                                Start         End      
                            ---------   ---------      
                             0x000000    0x000005      
-                            0x00102a    0x0012e9      
-            710 out of 33048 program addresses used, program memory utilization is 2%
+                            0x001000    0x001005      
+                            0x00102a    0x001239      
+            540 out of 33048 program addresses used, program memory utilization is 1%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                  Lcd_cmd   0x0010a2    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                 Lcd_data   0x00113e    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                 Lcd_init   0x0010d8    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
+                  Lcd_cmd   0x001096    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                 Lcd_data   0x0010bc    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                 Lcd_init   0x0010a2    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+               Lcd_string   0x0010c8    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+       ___return_lbl00000   0x001004    program     static                          
        ___return_lbl00000   0x000004    program     static                          
-       ___return_lbl00001   0x0012e6    program     static                          
-       ___return_lbl00002   0x0012aa    program     static                          
-                   __init   0x0012e8    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\stdclib\__init.c
-            __zero_memory   0x0012ac    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                _do_cinit   0x00120e    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
+       ___return_lbl00001   0x00122a    program     static                          
+       ___return_lbl00002   0x0011ee    program     static                          
+                   __init   0x001238    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\stdclib\__init.c
+                   __pa_0   0x001102    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_1   0x001108    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_2   0x001110    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_3   0x001122    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_4   0x00112c    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_5   0x001134    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_6   0x00113a    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_7   0x001146    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+               __string_0   0x00122c    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+            __zero_memory   0x0011f0    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                _do_cinit   0x001152    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
                    _entry   0x000000    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
-                 _startup   0x0012cc    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
-                compare_l   0x0012c2    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                copy_loop   0x001280    program     static                          
-            copy_one_byte   0x001286    program     static                          
-                    delay   0x00102c    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                     done   0x0012aa    program     static                          
-             done_copying   0x001294    program     static                          
-                     loop   0x0012dc    program     static                          
-                   loop_h   0x0012ba    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                   loop_l   0x0012c4    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                     main   0x001174    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                     test   0x001228    program     static                          
-               zero_block   0x0012ba    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                   _reset   0x001000    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                 _startup   0x001210    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
+                compare_l   0x001206    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                copy_loop   0x0011c4    program     static                          
+            copy_one_byte   0x0011ca    program     static                          
+                    delay   0x00102c    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                     done   0x0011ee    program     static                          
+             done_copying   0x0011d8    program     static                          
+                     loop   0x001220    program     static                          
+                   loop_h   0x0011fe    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                   loop_l   0x001208    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                     main   0x0010e4    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                     test   0x00116c    program     static                          
+               zero_block   0x0011fe    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
                    ADCON0   0x000fc2       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
                ADCON0bits   0x000fc2       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
                    ADCON1   0x000fc1       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
@@ -320,7 +334,7 @@ Linker Map File - Created Mon Oct 05 09:02:22 2026
                      WREG   0x000fe8       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
                 __FPFLAGS   0x000005       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm
             __FPFLAGSbits   0x000005       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm
-                  __tmp_0   0x000000       data     static C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
+                  __tmp_0   0x000000       data     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
                 curr_byte   0x000063       data     static E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
                curr_entry   0x000065       data     static E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
                  data_ptr   0x000067       data     static E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
@@ -333,28 +347,40 @@ Linker Map File - Created Mon Oct 05 09:02:22 2026
                 ---------  ---------  ---------  --------- ---------                
                    _entry   0x000000    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
        ___return_lbl00000   0x000004    program     static                          
-                    delay   0x00102c    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                  Lcd_cmd   0x0010a2    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                 Lcd_init   0x0010d8    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                 Lcd_data   0x00113e    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                     main   0x001174    program     extern C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
-                _do_cinit   0x00120e    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
-                     test   0x001228    program     static                          
-                copy_loop   0x001280    program     static                          
-            copy_one_byte   0x001286    program     static                          
-             done_copying   0x001294    program     static                          
-       ___return_lbl00002   0x0012aa    program     static                          
-                     done   0x0012aa    program     static                          
-            __zero_memory   0x0012ac    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                   loop_h   0x0012ba    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-               zero_block   0x0012ba    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                compare_l   0x0012c2    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                   loop_l   0x0012c4    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
-                 _startup   0x0012cc    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
-                     loop   0x0012dc    program     static                          
-       ___return_lbl00001   0x0012e6    program     static                          
-                   __init   0x0012e8    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\stdclib\__init.c
-                  __tmp_0   0x000000       data     static C:\Users\sansk\Desktop\Electronics\MPLab\Assignment5\exp5.c
+                   _reset   0x001000    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+       ___return_lbl00000   0x001004    program     static                          
+                    delay   0x00102c    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                  Lcd_cmd   0x001096    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                 Lcd_init   0x0010a2    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                 Lcd_data   0x0010bc    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+               Lcd_string   0x0010c8    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                     main   0x0010e4    program     extern C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_0   0x001102    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_1   0x001108    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_2   0x001110    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_3   0x001122    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_4   0x00112c    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_5   0x001134    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_6   0x00113a    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __pa_7   0x001146    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                _do_cinit   0x001152    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
+                     test   0x00116c    program     static                          
+                copy_loop   0x0011c4    program     static                          
+            copy_one_byte   0x0011ca    program     static                          
+             done_copying   0x0011d8    program     static                          
+       ___return_lbl00002   0x0011ee    program     static                          
+                     done   0x0011ee    program     static                          
+            __zero_memory   0x0011f0    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                   loop_h   0x0011fe    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+               zero_block   0x0011fe    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                compare_l   0x001206    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                   loop_l   0x001208    program     static E:\3.46\pic18-lt\cxx-framework\src\traditional\proc\p18f4550.asm
+                 _startup   0x001210    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\startup\c018i.c
+                     loop   0x001220    program     static                          
+       ___return_lbl00001   0x00122a    program     static                          
+               __string_0   0x00122c    program     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
+                   __init   0x001238    program     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\stdclib\__init.c
+                  __tmp_0   0x000000       data     static C:\Users\sansk\Desktop\Electronics\EPLabWork\Assignment5\exp5.c
                      SIGN   0x000004       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm
                 __FPFLAGS   0x000005       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm
             __FPFLAGSbits   0x000005       data     extern E:\3.46\pic18-lt\cxx-framework\src\traditional\math\cmath18.asm

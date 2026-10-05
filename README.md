@@ -24,6 +24,10 @@ All implementations follow strict embedded engineering standards:
 - Microchip C18 compatibility with USB HID bootloader vector relocation for PIC18F4550.
 - Calibrated hardware delays and calculation formulas included in comments.
 
+> [!TIP]
+> **Interactive Circuit Schematics & Simulation Tool:**  
+> Open **[`interfacing_diagrams.html`](interfacing_diagrams.html)** in any browser to inspect interactive, publication-quality vector schematics and run live logic simulations for Experiments 1 through 5.
+
 ---
 
 ## Course Experiments & Directory Map

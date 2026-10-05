@@ -11,6 +11,9 @@
 ## 1. Problem Statement
 Implement Timer 0 interrupt concept using PIC18F4550 microcontroller to generate a square wave of **10 Hz** frequency.
 
+> [!TIP]
+> View interactive vector schematic and run the live web simulator in **[`interfacing_diagrams.html`](../interfacing_diagrams.html)**.
+
 ---
 
 ## 2. Objectives

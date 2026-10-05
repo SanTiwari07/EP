@@ -33,7 +33,7 @@ file_001=no
 file_000=no
 file_001=no
 [FILE_INFO]
-file_000=exp3.c
+file_000=exp6.c
 file_001=..\rm18f4550.lkr
 [SUITE_INFO]
 suite_guid={5B7D72DD-9861-47BD-9F60-2BE967BF8416}

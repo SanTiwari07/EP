@@ -1,14 +1,16 @@
-# Embedded Systems Laboratory (EP Lab Work)
+# Embedded Processors Lab (EPL) - [2625PC32]
 
-Comprehensive embedded software implementations, hardware interfacing designs, and simulation files across major microcontroller platforms including 8051, PIC18F4550, ESP32, and STM32 (ARM Cortex-M).
+Third Year B. Tech (T. Y. B. Tech) AY (2026-27)  
+Department of Electronics and Telecommunication Engineering (E&TCE)  
+Semester: 5 | Credits: 1 | Teaching Scheme: P: 2 Hrs./Week | Examination Scheme: ESE (P): 50 Marks
 
 ---
 
-## Course Syllabus
+## Course Syllabus & Information
 
-Below is the official list of laboratory experiments and problem statements covered in this repository:
+Official curriculum outline, course objectives, outcomes, and laboratory contents:
 
-![Course Contents](assets/course_contents.png)
+![Course Syllabus](assets/course_contents.png)
 
 ---
 

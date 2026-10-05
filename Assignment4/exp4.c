@@ -6,14 +6,15 @@
  * PWM Pin: RC2 / CCP1 (Pin 17) -> Connect to Motor Driver (L293D Enable / PWM input)
  * Direction Pins: RB0 and RB1  -> Connect to Motor Driver (L293D IN1 and IN2)
  *
- * PWM Calculation:
- * ----------------
- * Oscillator Frequency (Fosc) = 12 MHz
+ * PWM Calculation (Fosc = 48 MHz):
+ * ---------------------------------
+ * Oscillator Frequency (Fosc) = 48 MHz (PIC18F4550 USB Clock)
  * Timer 2 Prescaler = 16
+ * Tosc = 1 / 48 MHz = 0.02083 us
  *
  * PWM Period = [(PR2) + 1] * 4 * Tosc * TMR2_Prescaler
- * For PR2 = 250 (0xFA):
- * PWM Period = (250 + 1) * 4 * (1 / 12 MHz) * 16 = 1.338 ms (~746 Hz)
+ * For PR2 = 250:
+ * PWM Period = (250 + 1) * 4 * (1 / 48 MHz) * 16 = 334.6 us (~2.99 kHz)
  *
  * PWM Duty Cycle:
  * Duty Cycle = CCPR1L * 4 * Tosc * TMR2_Prescaler

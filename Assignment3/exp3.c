@@ -5,15 +5,17 @@
  * Target Microcontroller: PIC18F4550
  * Output Pin: PORTB pin RB0 (or any GPIO pin)
  *
- * Calculation for 1 kHz Square Wave:
- * ----------------------------------
+ * Calculation for 1 kHz Square Wave with Fosc = 48 MHz:
+ * -----------------------------------------------------
  * Desired Frequency = 1 kHz (Period T = 1 ms = 1000 us)
  * Half-cycle time (delay per toggle) = T / 2 = 500 us
  *
- * Assuming Oscillator Frequency (Fosc) = 12 MHz:
- * Instruction Cycle Time (Tcy) = 4 / Fosc = 4 / 12 MHz = 0.333 us
- * Using Timer0 Prescaler = 1:4
- * Timer Tick = 0.333 us * 4 = 1.333 us
+ * Oscillator Frequency (Fosc) = 48 MHz (PIC18F4550 USB Clock)
+ * Instruction Clock (Fcy) = Fosc / 4 = 48 MHz / 4 = 12 MHz
+ * Instruction Cycle Time (Tcy) = 1 / 12 MHz = 0.0833 us (83.33 ns)
+ *
+ * Using Timer0 Prescaler = 1:16 (T0CON bits 2:0 = 011):
+ * Timer Tick = Tcy * 16 = (1 / 12 us) * 16 = 1.333 us
  * Number of counts needed = 500 us / 1.333 us = 375 counts
  * Initial Count (16-bit) = 65536 - 375 = 65161 = 0xFE89
  * TMR0H = 0xFE
@@ -73,15 +75,15 @@ void main(void)
 
     /*
      * Configure Timer 0:
-     * T0CON = 0x01:
+     * T0CON = 0x03:
      * Bit 7 (TMR0ON) = 0 (Timer OFF for now)
      * Bit 6 (T08BIT) = 0 (16-bit timer mode)
-     * Bit 5 (T0CS)   = 0 (Internal instruction cycle clock)
+     * Bit 5 (T0CS)   = 0 (Internal instruction cycle clock Fosc/4)
      * Bit 4 (T0SE)   = 0 (Increment on low-to-high transition)
      * Bit 3 (PSA)    = 0 (Prescaler is assigned)
-     * Bits 2-0 (T0PS)= 001 (Prescaler 1:4)
+     * Bits 2-0 (T0PS)= 011 (Prescaler 1:16)
      */
-    T0CON = 0x01;
+    T0CON = 0x03;
 
     /* Load initial count for 500 us delay (0xFE89) */
     TMR0H = 0xFE;

@@ -57,7 +57,7 @@ All implementations follow strict embedded engineering standards:
 - Location: `Assignment3/`
 - Target: PIC18F4550
 - Compiler: Microchip C18
-- Description: Generates a calibrated 1 kHz square wave on `PORTBbits.RB0` using the 16-bit Timer 0 overflow interrupt. The High Priority Interrupt vector is relocated to address `0x1008` to work seamlessly with USB bootloaders. Calculations derive exact register values (`TMR0H = 0xFE`, `TMR0L = 0x89`) based on a 12 MHz crystal oscillator and 1:4 prescaler.
+- Description: Generates a calibrated 1 kHz square wave on `PORTBbits.RB0` using the 16-bit Timer 0 overflow interrupt. The High Priority Interrupt vector is relocated to address `0x1008` to work seamlessly with USB bootloaders. Calculations derive exact register values (`TMR0H = 0xFE`, `TMR0L = 0x89`) based on a 48 MHz oscillator frequency (USB PLL) and 1:16 prescaler (`T0CON = 0x03`).
 
 ### Assignment 4: PIC18F4550 CCP PWM DC Motor Speed Control
 - Location: `Assignment4/`

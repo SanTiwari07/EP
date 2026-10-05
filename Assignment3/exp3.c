@@ -1,35 +1,79 @@
 /*
- * Experiment 3: Implement Timer 0 Interrupt concept using PIC18F4550
- * to generate a square wave of given frequency (e.g., 1 kHz).
+ * ============================================================================
+ * PUNE INSTITUTE OF COMPUTER TECHNOLOGY, PUNE - 411043
+ * Department of Electronics & Telecommunication Engineering
+ * Course: EPL (Embedded Processors Laboratory) | Class: T.Y. E&TC Engg.
  *
- * Target Microcontroller: PIC18F4550
- * Output Pin: PORTB pin RB0 (or any GPIO pin)
+ * EXPT. NO.: 3
+ * TITLE: Generation of Square wave using Timer 0 interrupt.
  *
- * Calculation for 1 kHz Square Wave with Fosc = 48 MHz:
- * -----------------------------------------------------
- * Desired Frequency = 1 kHz (Period T = 1 ms = 1000 us)
- * Half-cycle time (delay per toggle) = T / 2 = 500 us
+ * PROBLEM STATEMENT:
+ * Implement Timer 0 interrupt concept using PIC18F4550 uC to generate a
+ * square wave of 10 Hz frequency.
  *
- * Oscillator Frequency (Fosc) = 48 MHz (PIC18F4550 USB Clock)
- * Instruction Clock (Fcy) = Fosc / 4 = 48 MHz / 4 = 12 MHz
- * Instruction Cycle Time (Tcy) = 1 / 12 MHz = 0.0833 us (83.33 ns)
+ * OBJECTIVES:
+ * a. To understand the basic concepts of Timer and Counter.
+ * b. To study in detail Timer 0 of PIC Microcontroller.
+ * c. To study interrupt structure of PIC Microcontroller.
+ * d. To use timer interrupt and its related SFRs.
  *
- * Using Timer0 Prescaler = 1:16 (T0CON bits 2:0 = 011):
- * Timer Tick = Tcy * 16 = (1 / 12 us) * 16 = 1.333 us
- * Number of counts needed = 500 us / 1.333 us = 375 counts
- * Initial Count (16-bit) = 65536 - 375 = 65161 = 0xFE89
- * TMR0H = 0xFE
- * TMR0L = 0x89
+ * S/W PACKAGES AND H/W USED:
+ * MPLAB IDE, C18 Compiler, DSO, Universal Board of PIC18F and PICkit3
+ *
+ * REFERENCES:
+ * a. Mazidi, PIC microcontroller & embedded system 3rd Edition, Pearson
+ * b. Datasheet of PIC18F4550 / PIC18F4520 / PIC18F458, www.microchip.com
+ *
+ * ----------------------------------------------------------------------------
+ * CALCULATION FOR GENERATING SQUARE WAVE OF 10 Hz (Section 5.2):
+ * ----------------------------------------------------------------------------
+ * Desired Wave Frequency (F) = 10 Hz
+ * Desired Time Period (T) = 1 / F = 1 / 10 Hz = 0.1 s = 100 ms = 100,000 us
+ * Half-cycle time (delay per toggle, Td) = T / 2 = 50 ms = 50,000 us
+ *
+ * Oscillator Frequency (Fosc) = 48 MHz (Universal Board PIC18F4550)
+ * Internal Instruction Clock (Fcy) = Fosc / 4 = 48 MHz / 4 = 12 MHz
+ * Timer Period (Tp) = 1 / Fcy = 4 / Fosc = 1 / 12 MHz = 0.08333 us (1/12 us)
+ *
+ * Using Timer0 in 16-bit Mode with Prescaler = 1:16 (T0CON<2:0> = 011):
+ * Equivalent Timer Period (Teq) = Tp * Prescaler = (1/12 us) * 16 = 4/3 us
+ * Number of counts (n) = Td / Teq = 50,000 us / (4/3 us)
+ *                      = (50,000 * 3) / 4 = 37,500 counts
+ *
+ * Initial 16-bit Register Count = 65,536 - n
+ *                               = 65,536 - 37,500 = 28,036
+ *
+ * Converting 28,036 to Hexadecimal:
+ * 28,036 / 256 = 109 with remainder 132
+ * 109 = 0x6D (TMR0H)
+ * 132 = 0x84 (TMR0L)
+ * Initial hex value = 0x6D84
+ *   TMR0H = 0x6D
+ *   TMR0L = 0x84
+ *
+ * ----------------------------------------------------------------------------
+ * T0CON (Timer0 Control Register) Configuration:
+ * ----------------------------------------------------------------------------
+ * Bit 7: TMR0ON = 0 (Timer stopped during configuration, enabled later)
+ * Bit 6: T08BIT = 0 (16-bit timer/counter mode)
+ * Bit 5: T0CS   = 0 (Internal instruction cycle clock CLKO / Fosc/4)
+ * Bit 4: T0SE   = 0 (Increment on low-to-high transition)
+ * Bit 3: PSA    = 0 (Timer0 prescaler is assigned)
+ * Bits 2-0: TOPS2:TOPS0 = 011 (Prescaler 1:16)
+ *
+ * T0CON = 0b00000011 = 0x03 (Note: When timer is ON, T0CON = 0x83)
+ * Note: Algorithm step 2 refers to 16-bit mode, internal clock, 1:16 prescaler.
+ * ============================================================================
  */
 
 #include <p18f4550.h>
 
-/* Function prototype */
+/* Function prototypes */
 void timer0_isr(void);
 
 extern void _startup(void);
 
-/* Relocate Reset Vector for USB HID Bootloader */
+/* Relocate Reset Vector to 0x1000 for USB HID Bootloader compatibility */
 #pragma code _RESET_INTERRUPT_VECTOR = 0x1000
 void _reset(void)
 {
@@ -37,7 +81,7 @@ void _reset(void)
 }
 #pragma code
 
-/* Relocate High Priority Interrupt Vector to 0x1008 */
+/* Relocate High Priority Interrupt Vector to 0x1008 as specified in Algorithm */
 #pragma code _HIGH_INTERRUPT_VECTOR = 0x1008
 void high_vector(void)
 {
@@ -45,60 +89,68 @@ void high_vector(void)
 }
 #pragma code
 
-/* Timer 0 Interrupt Service Routine (ISR) */
+/*
+ * ----------------------------------------------------------------------------
+ * Step 6: Interrupt Service Routine (ISR) for Timer 0
+ * ----------------------------------------------------------------------------
+ */
 #pragma interrupt timer0_isr
 void timer0_isr(void)
 {
-    /* Check if Timer 0 interrupt flag is set */
-    if(INTCONbits.TMR0IF == 1)
+    /* Check if Timer 0 overflow interrupt flag is set */
+    if (INTCONbits.TMR0IF == 1)
     {
-        /* Clear the interrupt flag */
-        INTCONbits.TMR0IF = 0;
-
-        /* Toggle the output pin to generate square wave */
+        /* 6a. Toggle the PORT pin RB0 */
         PORTBbits.RB0 = ~PORTBbits.RB0;
 
-        /* Reload Timer 0 registers for next half cycle */
-        TMR0H = 0xFE;
-        TMR0L = 0x89;
+        /* 6b. Clear the TMR0IF flag for the next round */
+        INTCONbits.TMR0IF = 0;
+
+        /* 6c. Reload TMR0H first, then TMR0L with calculated count (0x6D84) */
+        TMR0H = 0x6D;
+        TMR0L = 0x84;
     }
 }
 
+/*
+ * ----------------------------------------------------------------------------
+ * Main Function - Follows Section 7: Algorithm
+ * ----------------------------------------------------------------------------
+ */
 void main(void)
 {
-    /* Set all pins as digital I/O */
+    /* Set all ADC pins as digital I/O */
     ADCON1 = 0x0F;
 
-    /* Configure RB0 as output pin for square wave */
+    /* 1. Configure Port pin RB0 as output and initial value 0 */
     TRISBbits.TRISB0 = 0;
     PORTBbits.RB0 = 0;
 
     /*
-     * Configure Timer 0:
-     * T0CON = 0x03:
-     * Bit 7 (TMR0ON) = 0 (Timer OFF for now)
-     * Bit 6 (T08BIT) = 0 (16-bit timer mode)
-     * Bit 5 (T0CS)   = 0 (Internal instruction cycle clock Fosc/4)
-     * Bit 4 (T0SE)   = 0 (Increment on low-to-high transition)
-     * Bit 3 (PSA)    = 0 (Prescaler is assigned)
-     * Bits 2-0 (T0PS)= 011 (Prescaler 1:16)
+     * 2. Load value in T0CON: 16-bit mode, internal clock source (Fosc/4),
+     *    prescaler assigned with 1:16.
+     *    T0CON = 0x03 (TMR0ON=0, T08BIT=0, T0CS=0, T0SE=0, PSA=0, TOPS=011)
      */
     T0CON = 0x03;
 
-    /* Load initial count for 500 us delay (0xFE89) */
-    TMR0H = 0xFE;
-    TMR0L = 0x89;
+    /* 3. Load registers TMR0H first and then TMR0L with calculated count */
+    TMR0H = 0x6D;
+    TMR0L = 0x84;
 
-    /* Interrupt Configuration */
-    INTCONbits.TMR0IF = 0;  /* Clear Timer 0 interrupt flag */
-    INTCONbits.TMR0IE = 1;  /* Enable Timer 0 interrupt */
+    /* 4. Enable Timer0 Interrupt and Global Interrupt using INTCON Register */
+    INTCONbits.TMR0IF = 0;  /* Clear Timer0 flag */
+    INTCONbits.TMR0IE = 1;  /* Enable Timer0 overflow interrupt */
     INTCONbits.GIE = 1;     /* Enable Global Interrupts */
 
-    /* Turn ON Timer 0 */
+    /* 5. Start the timer by setting TMR0ON bit in T0CON (T0CON becomes 0x83) */
     T0CONbits.TMR0ON = 1;
 
-    /* Idle loop: CPU is free while interrupt handles the wave generation */
-    while(1)
+    /*
+     * 7. Idle loop: CPU remains free while interrupt generates 10 Hz square wave.
+     *    Result can be verified on DSO / Oscilloscope connected to pin RB0.
+     */
+    while (1)
     {
+        /* Background processing can be added here if needed */
     }
 }

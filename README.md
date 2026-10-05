@@ -32,8 +32,8 @@ All implementations follow strict embedded engineering standards:
 |---|---|---|---|---|
 | 1 | [Assignment1](Assignment1/) | 8051 (AT89C51/S52) | Develop and implement an embedded program to toggle an LED using an 8051 microcontroller. | GPIO Port 1, Software Delays, Bit-shifting, BCD/Hex Counting |
 | 2 | [Assignment2](Assignment2/) | PIC18F4550 | Design and develop interfacing of Pushbutton, LEDs, Relay, and Buzzer with PIC18FXXXX. | TRISB, TRISC, TRISD, Port Pull-ups, Relays, Buzzers, Active-Low Buttons |
-| 3 | [Assignment3](Assignment3/) | PIC18F4550 | Implement Timer 0 interrupt concept using PIC18FXXXX to generate a square wave of any given frequency. | T0CON, INTCON, 16-bit Timer0, Vector Relocation (0x1008), 1 kHz Wave |
-| 4 | [Assignment4](Assignment4/) | PIC18F4550 | Design and develop a PWM-based motor speed control system using CCP PWM mode. | CCP1CON, PR2, T2CON, Timer 2, CCPR1L Duty Cycle Sweep |
+| 3 | [Assignment3](Assignment3/) | PIC18F4550 | Implement Timer 0 interrupt concept using PIC18F4550 uC to generate a square wave of 10 Hz frequency. | T0CON, INTCON, 16-bit Timer0, Vector Relocation (0x1008), 10 Hz Wave |
+| 4 | [Assignment4](Assignment4/) | PIC18F4550 | Design and develop a PWM based motor speed control system using CCP PWM mode using PIC18F4550 uC. | CCP1CON, PR2, T2CON, Timer 2, 4 kHz PWM, L293D Motor Driver |
 | 5 | [Assignment5](Assignment5/) | PIC18F4550 | Design and implement interfacing of 16x2 LCD module to PIC18FXXXX to display string. | HD44780 8-Bit Interface, Command/Data Sequencing, PORTE Control, PORTD Bus |
 | 6 | [Assignment6](Assignment6/) | PIC18F4550 | Interface and program a temperature sensor with PIC18FXXXX to display real-time readings on an LCD. | LM35, 10-bit ADC (ADCON0/1/2), Channel AN0, Real-Time String Formatting |
 | 7 | [Assignment7](Assignment7/) | ESP32 (ESP-WROOM-32) | Develop an ESP32-based LED blinking program and establish Wi-Fi connectivity for IoT applications. | GPIO 2, WiFi Station Mode, Connection Polling, Serial Diagnostics, IP Reporting |
@@ -55,17 +55,17 @@ All implementations follow strict embedded engineering standards:
 - Compiler: Microchip C18 (`p18f4550.h`)
 - Description: Demonstrates digital input and output control. Active-low pushbuttons on `RB0` and `RB1` with internal weak pull-ups trigger switching of a relay (`RC1`), a buzzer (`RC2`), and cascading LED chase patterns on `PORTD`. Integrated with USB HID bootloader relocation table (`vector_relocate.h`).
 
-### Assignment 3: PIC18F4550 Timer 0 Interrupt Square Wave Generation
+### Assignment 3: PIC18F4550 Timer 0 Interrupt Square Wave Generation (10 Hz)
 - Location: `Assignment3/`
 - Target: PIC18F4550
 - Compiler: Microchip C18
-- Description: Generates a calibrated 1 kHz square wave on `PORTBbits.RB0` using the 16-bit Timer 0 overflow interrupt. The High Priority Interrupt vector is relocated to address `0x1008` to work seamlessly with USB bootloaders. Calculations derive exact register values (`TMR0H = 0xFE`, `TMR0L = 0x89`) based on a 48 MHz oscillator frequency (USB PLL) and 1:16 prescaler (`T0CON = 0x03`).
+- Description: Generates a calibrated 10 Hz square wave on `PORTBbits.RB0` using the 16-bit Timer 0 overflow interrupt. The High Priority Interrupt vector is relocated to address `0x1008` as specified in the PICT EPL syllabus. Calculations derive exact register values (`TMR0H = 0x6D`, `TMR0L = 0x84`, corresponding to 37,500 counts for a 50 ms half-cycle delay) based on a 48 MHz oscillator frequency and 1:16 prescaler (`T0CON = 0x03`).
 
-### Assignment 4: PIC18F4550 CCP PWM DC Motor Speed Control
+### Assignment 4: PIC18F4550 CCP PWM DC Motor Speed Control (4 kHz)
 - Location: `Assignment4/`
 - Target: PIC18F4550
 - Compiler: Microchip C18
-- Description: Implements motor speed modulation using the Capture/Compare/PWM (CCP1) hardware module on pin `RC2`. Configures Timer 2 (`PR2 = 250`, 1:16 prescaler) to establish PWM frequency and dynamically adjusts the duty cycle register (`CCPR1L`) from 0% to 100% to accelerate and decelerate a DC motor driven via an L293D H-bridge.
+- Description: Implements motor speed modulation using the Capture/Compare/PWM (CCP1) hardware module on pin `RC2` driving an L293D H-bridge. Configures Timer 2 (`PR2 = 186`, 1:16 prescaler at 48 MHz) to establish a 4 kHz PWM carrier frequency, and dynamically adjusts the 10-bit duty cycle (`CCPR1L` and `CCP1CON<5:4>`) through 20%, 40%, 60%, 80%, and 100% speed steps as derived in the PICT EPL manual.
 
 ### Assignment 5: PIC18F4550 16x2 Alphanumeric LCD Interfacing
 - Location: `Assignment5/`

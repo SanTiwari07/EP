@@ -122,6 +122,68 @@ void main(void) {
 
 ## 6. Comprehensive Viva Voce & Oral Examination Guide
 
+### Level 0: Fundamental Line-by-Line Code Breakdown ("What Does This Line Mean & Why Did You Write It?")
+
+#### Q0.1: Why did you write `#include <p18f4550.h>`? What does it provide, and what happens if you omit it?
+**Answer:**  
+- **What it means:** A C preprocessor directive that imports the device header file for the PIC18F4550.
+- **Why we wrote it:** It defines hardware register addresses (`TRISB`, `TRISD`, `PORTD`) and bit-field structs (`PORTBbits`, `PORTDbits`).
+- **If omitted:** The compiler will immediately fail with syntax and undeclared identifier errors for `TRISB`, `PORTBbits`, etc.
+
+#### Q0.2: What do `#pragma config FOSC = HS`, `WDT = OFF`, `LVP = OFF` do?
+**Answer:**  
+- **`FOSC = HS`:** Selects High-Speed External Crystal Oscillator ($8\text{ MHz}$).
+- **`WDT = OFF`:** Turns OFF the hardware Watchdog Timer so it doesn't cause unexpected resets.
+- **`LVP = OFF`:** Disables Low-Voltage Programming, releasing pin `RB5` from programming duty to standard digital I/O.
+
+#### Q0.3: Why did you write `TRISB = 0xFF;`? What does `0xFF` mean in binary, and why are pins configured as inputs?
+**Answer:**  
+- **Binary Equivalent:** `0xFF` is `1111 1111` in binary (all 8 bits set to 1).
+- **Why we wrote it:** In PIC microcontrollers, writing `1` to a TRIS register bit places the corresponding pin's output MOSFET driver into a high-impedance (Hi-Z) state, configuring the pin as a **Digital Input**. Since sensors and switches are connected to Port B, `TRISB = 0xFF;` prepares all 8 Port B pins to read external digital voltage signals without loading the source.
+
+#### Q0.4: Why did you write `TRISD = 0x00;`? What does `0x00` configure?
+**Answer:**  
+- **Binary Equivalent:** `0x00` is `0000 0000` in binary (all 8 bits set to 0).
+- **Why we wrote it:** Writing `0` to a TRIS register bit enables the internal complementary push-pull output transistors, configuring all 8 pins of Port D as low-impedance **Digital Outputs** capable of driving relays and indicators.
+
+#### Q0.5: Why did you write `PORTD = 0x00;` before entering the `while(1)` loop?
+**Answer:**  
+- **What it means:** Writes $0\text{V}$ (logic LOW) to all 8 output pins of Port D.
+- **Why we wrote it (Safety Initialization):** When a microcontroller powers up, register states can be indeterminate. Setting `PORTD = 0x00;` ensures that all relays, fans, and lights are completely **de-energized (OFF)** at boot time, preventing hazardous unintentional appliance switching during power-on transients.
+
+#### Q0.6: What does `while(1)` mean? Why is home automation structured as an infinite loop?
+**Answer:**  
+- **What it means:** An infinite, non-terminating loop. In C, `1` evaluates to Boolean TRUE.
+- **Why required:** A home automation system must continuously monitor the status of wall switches and environmental sensors in real time $24/7$. If `main()` terminated, the microcontroller would cease monitoring inputs, leaving appliances permanently stuck in their last state.
+
+#### Q0.7: In `if(PORTBbits.RB0 == 1)`, what does `PORTBbits` mean? What is the dot `.` operator? What does `RB0` represent?
+**Answer:**  
+- **`PORTBbits`:** A compiler-defined `union`/`struct` mapped directly to the hardware address of the Port B register.
+- **Dot `.` Operator:** The standard C structure member access operator used to access an individual bit field within the byte.
+- **`RB0`:** Represents Bit 0 of Port B (physical DIP pin 33). It allows single-bit read access without requiring manual bitmasking like `(PORTB & 0x01)`.
+
+#### Q0.8: Why did you compare `== 1`? What physical voltage produces `1`?
+**Answer:**  
+- **Physical Voltage:** In a $+5\text{V}$ CMOS system, an input voltage above the Input High Voltage threshold ($V_{IH} \approx 2.0\text{V}$ to $5.0\text{V}$) is detected as a logic **`1` (HIGH)**. A voltage below $V_{IL} \approx 0.8\text{V}$ is detected as a logic **`0` (LOW)**.
+- **Comparison:** When the switch is closed (HIGH), `PORTBbits.RB0` evaluates to `1`, triggering the `if` condition.
+
+#### Q0.9: What does `PORTDbits.RD0 = 1;` do physically at the pin?
+**Answer:**  
+It turns ON the internal P-channel pull-up MOSFET for pin `RD0`, connecting physical pin 19 directly to $V_{DD}$ ($+5.0\text{V}$). This supplies current to the base of the external BC547 driver transistor (or LED), energizing the relay coil to turn ON the room light.
+
+#### Q0.10: Why is the `else` block (`else { PORTDbits.RD0 = 0; }`) mandatory? What happens if you delete it?
+**Answer:**  
+- **Why mandatory:** If the user turns the switch OFF (`PORTBbits.RB0 == 0`), the `else` block drives `RD0 = 0` ($0\text{V}$), turning off the transistor and de-energizing the relay.
+- **If deleted:** When the user closes the switch, `RD0` becomes `1` and the light turns ON. But when the user opens the switch, there is no code to clear `RD0` back to `0`. Consequently, the appliance turns ON once and **can never be turned OFF**, rendering the system completely unresponsive.
+
+#### Q0.11: Why is there NO `delay_ms()` inside the `while(1)` loop in this project, unlike the traffic light or 7-segment counter?
+**Answer:**  
+Because this is an **interactive real-time polling system**:
+- In the traffic light and 7-segment counter, delays are required to hold visual states for human observation (5 seconds or 500 ms).
+- In home automation, any delay placed inside the loop would introduce sluggish responsiveness (input latency). Without delays, the CPU polls the switches hundreds of thousands of times per second, ensuring sub-microsecond instantaneous response whenever a user flips a light switch.
+
+---
+
 ### Level 1: Fundamental / Conceptual Questions ("What & Why")
 
 #### Q1.1: What is home automation, and what role does the microcontroller play?

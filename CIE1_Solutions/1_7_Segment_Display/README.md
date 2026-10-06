@@ -169,6 +169,82 @@ void main(void) {
 
 ## 6. Comprehensive Viva Voce & Oral Examination Guide
 
+### Level 0: Fundamental Line-by-Line Code Breakdown ("What Does This Line Mean & Why Did You Write It?")
+
+#### Q0.1: Why did you write `#include <p18f4550.h>`? What does it do, and what happens if you omit it?
+**Answer:**  
+- **What it means:** It is a preprocessor directive that instructs the compiler to include the device-specific header file for the PIC18F4550 microcontroller.
+- **Why we wrote it:** This header file contains the memory-mapped definitions for all Special Function Registers (SFRs) like `TRISB`, `PORTB`, `LATB`, `TRISD`, `PORTD`, and their individual bit structures (e.g., `PORTBbits.RB0`).
+- **If omitted:** The compiler will throw fatal errors because names like `TRISB` or `PORTD` will be completely unrecognized identifiers.
+
+#### Q0.2: What is `#pragma`? What does `#pragma config FOSC = HS` mean? What does `HS` stand for?
+**Answer:**  
+- **What it means:** `#pragma` is a directive used to issue compiler-specific or target-specific commands that cannot be expressed in standard ANSI C. `#pragma config` specifically writes values into the non-volatile Configuration Fuse Registers (Configuration Words) located at program memory address `0x300000` to `0x30000D`.
+- **Why we wrote it:** `FOSC = HS` selects the **High-Speed Crystal Oscillator** mode.
+- **What `HS` stands for:** *High Speed*. It tells the on-chip oscillator inverter circuitry to operate with external quartz crystals or ceramic resonators in the medium-to-high frequency range ($4\text{ MHz}$ to $25\text{ MHz}$). At $8\text{ MHz}$, `HS` mode provides the clock driving all instruction cycles.
+
+#### Q0.3: Why did you write `#pragma config WDT = OFF`? What is the Watchdog Timer, and what happens if you leave it ON?
+**Answer:**  
+- **What it means:** Disables the internal hardware **Watchdog Timer (WDT)**.
+- **Why we wrote it:** The Watchdog Timer is an on-chip free-running counter clocked by an independent RC oscillator. In commercial systems, it is designed to recover from firmware crashes: if the software does not periodically execute `ClrWdt()` before the timer overflows (typically every $4\text{ ms}$ to $131\text{ ms}$), the WDT forces an automatic hardware CPU reset.
+- **If left ON (`WDT = ON`):** Because our program uses long blocking delays (`delay_ms(500)`), the watchdog timer will overflow midway through the delay, resetting the microcontroller repeatedly every few milliseconds. The counter will never increment past `00` or `01`.
+
+#### Q0.4: Why did you write `#pragma config LVP = OFF`? What is Low-Voltage Programming, and why does keeping it ON disable pin RB5?
+**Answer:**  
+- **What it means:** Disables the **Low-Voltage In-Circuit Serial Programming (LVP)** mode.
+- **Why we wrote it:** When LVP is enabled, dedicated pin `RB5/PGM` cannot be used as general-purpose digital I/O because applying a logic high voltage to `RB5` enters hardware programming mode.
+- **Why turn it OFF:** Setting `LVP = OFF` reclaims pin `RB5` so it functions as a regular digital I/O pin (driving segment `f` of the Units display).
+
+#### Q0.5: What does `void delay_ms(unsigned int ms)` mean? Why is the return type `void`? Why is `ms` declared as `unsigned int` instead of `signed int`?
+**Answer:**  
+- **Return Type `void`:** Indicates that this function executes an operational timing delay and does not return any computed value to the caller.
+- **Parameter `unsigned int ms`:** An unsigned 16-bit integer holding values from $0$ to $65,535$. Time intervals can never be negative; using `unsigned` prevents negative value errors and doubles the maximum delay capability from $32,767\text{ ms}$ ($\sim 32\text{ s}$) to $65,535\text{ ms}$ ($\sim 65.5\text{ s}$).
+
+#### Q0.6: In `for(j = 0; j < 165; j++);`, why is there an empty semicolon `;` at the end? Where did the number 165 come from?
+**Answer:**  
+- **The Empty Semicolon `;`:** Forms a null statement. The CPU simply executes the loop counter increment and condition check without executing any loop body, effectively burning CPU clock cycles to create time delay.
+- **Origin of 165:** At $F_{osc} = 8\text{ MHz}$, the instruction clock is $T_{cy} = \frac{4}{F_{osc}} = 0.5\,\mu\text{s}$. The compiled assembly for one iteration of this C loop takes roughly 12 instruction cycles ($12 \times 0.5\,\mu\text{s} = 6.0\,\mu\text{s}$). To produce $1\text{ ms} = 1000\,\mu\text{s}$:
+  $$\text{Iterations} \approx \frac{1000\,\mu\text{s}}{6.0\,\mu\text{s}} \approx 165\text{ iterations}$$
+
+#### Q0.7: Why is `unsigned char seg_code[]` declared as `unsigned char` rather than `int`? What does `0x` mean in `0x3F`?
+**Answer:**  
+- **`unsigned char`:** An 8-bit data type ($1\text{ byte}$, range $0$ to $255$). Since microcontroller I/O ports (`PORTB`, `PORTD`) are exactly 8 bits wide, an 8-bit `unsigned char` maps directly $1:1$ to the physical hardware port register with zero wasted RAM. Using `int` ($16\text{ bits}$ in C18) would needlessly waste RAM and require extra truncation instructions.
+- **`0x` Prefix:** Designates that the constant is written in **Hexadecimal (base 16)** format. `0x3F` equals binary `0011 1111` ($63$ in decimal).
+
+#### Q0.8: Why did you declare `int tens, units;` at the very beginning of `main()`? Why couldn't you write `for(int tens = 0; ...)`?
+**Answer:**  
+The Microchip MPLAB C18 compiler complies with the **ANSI C89 (ISO C90)** standard. Under C89, all variable declarations within a block must appear before any executable statements. In-loop declarations like `for(int tens = 0; ...)` were only introduced in C99, and attempting to use them in C18 causes a syntax compilation error.
+
+#### Q0.9: What do `TRISB = 0x00;` and `TRISD = 0x00;` mean? What does TRIS stand for? Why is `0` output and `1` input?
+**Answer:**  
+- **Meaning:** Sets all 8 pins of Port B and all 8 pins of Port D as digital outputs.
+- **What TRIS stands for:** **Tri-State**. It controls the high-impedance (third state) buffers of the physical pins.
+- **Why `0` is Output and `1` is Input:** Standard Microchip convention:
+  - `0` looks like **O** for **Output**.
+  - `1` looks like **I** for **Input**.
+
+#### Q0.10: Why did you write `PORTB = 0x00;` and `PORTD = 0x00;` right before the loop?
+**Answer:**  
+Upon power-on reset, register contents can hold indeterminate states or bootloader artifacts. Writing `0x00` initializes all display pins to logic LOW ($0\text{V}$), ensuring that all segments of both Common Cathode displays start in a completely blank/OFF state before counting commences.
+
+#### Q0.11: What does `while(1)` mean? Why `1`? Why do embedded microcontroller programs run in an infinite loop?
+**Answer:**  
+- **Meaning:** Creates an endless/infinite loop.
+- **Why `1`:** In C, any non-zero integer evaluates to Boolean `TRUE`. Therefore, `while(1)` will never evaluate to false and will never terminate.
+- **Why infinite loops are required in embedded systems:** Microcontrollers do not have an underlying desktop operating system (like Windows or Linux) to "exit" to. If `main()` reaches the end and exits, the CPU instruction pointer will increment into unprogrammed flash memory, executing random opcodes (or `0xFFFF`) and crashing or executing continuous resets. Embedded firmware must run continuously from power-on until power-down.
+
+#### Q0.12: In `PORTD = seg_code[tens];` and `PORTB = seg_code[units];`, how does array indexing work? What physical signals are sent when `tens = 0`?
+**Answer:**  
+- **Array Indexing:** `seg_code[tens]` uses the current integer value of `tens` as an offset into the array `seg_code`. When `tens = 0`, it fetches index 0, which contains `0x3F`.
+- **Physical Output:** `PORTD = 0x3F` writes binary `0011 1111` to Port D. This drives pins `RD0` through `RD5` (segments a, b, c, d, e, f) to $+5\text{V}$ (logic HIGH), illuminating the numeral '0', while keeping `RD6` (segment g) and `RD7` (dp) at $0\text{V}$ (OFF).
+
+#### Q0.13: Why did you write `delay_ms(500);`? What happens if you change it to `delay_ms(5);` or omit it completely?
+**Answer:**  
+- **Why 500 ms:** It holds each two-digit number static for half a second, matching the human cognitive and visual perception rate.
+- **If set to 5 ms or omitted:** The MCU increments the count every few microseconds. To human eyes, due to retinal Persistence of Vision (POV), all numerals from 0 to 9 will blur together into a solid glowing "88" at all times, making individual counts completely imperceptible.
+
+---
+
 ### Level 1: Fundamental / Conceptual Questions ("What & Why")
 
 #### Q1.1: What is a 7-segment display, and why is it preferred over LCDs in basic counters?

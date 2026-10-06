@@ -142,6 +142,77 @@ void main(void) {
 
 ## 6. Comprehensive Viva Voce & Oral Examination Guide
 
+### Level 0: Fundamental Line-by-Line Code Breakdown ("What Does This Line Mean & Why Did You Write It?")
+
+#### Q0.1: Why did you write `#include <p18f4550.h>`? What does it contain, and what happens if you omit it?
+**Answer:**  
+- **What it means:** It is a preprocessor header inclusion directive for the target PIC18F4550 microcontroller.
+- **Why we wrote it:** It defines all the register memory addresses (`TRISB`, `PORTB`, `LATB`) and bit-field structures. Without it, the compiler does not know what `PORTB` or `TRISB` refers to, resulting in fatal syntax and undeclared identifier compilation errors.
+
+#### Q0.2: What do `#pragma config FOSC = HS`, `WDT = OFF`, `LVP = OFF` do? Why is `WDT = OFF` particularly crucial for this traffic light controller?
+**Answer:**  
+- **`#pragma config FOSC = HS`:** Configures the clock system for a High-Speed external crystal oscillator ($8\text{ MHz}$).
+- **`#pragma config LVP = OFF`:** Disables Low-Voltage Programming, releasing `RB5` from programming duties for regular digital I/O.
+- **`#pragma config WDT = OFF` (Crucial):** Disables the Watchdog Timer. In this code, we call `delay_ms(5000)` which blocks CPU execution for 5 seconds. If the Watchdog Timer were left ON (`WDT = ON`), it would overflow after roughly $18\text{ ms}$ to $131\text{ ms}$, forcing a continuous hardware CPU reset. As a result, the code would perpetually reboot at the Red light and never progress to Green.
+
+#### Q0.3: What does `void delay_ms(unsigned int ms)` do? How does `delay_ms(5000)` generate exactly 5 seconds?
+**Answer:**  
+- **Inner Loop (`for(j = 0; j < 165; j++);`):** The inner loop executes 165 empty loop cycles. At $F_{osc} = 8\text{ MHz}$ ($T_{cy} = 0.5\,\mu\text{s}$), one iteration of the inner C loop takes $\sim 12$ instruction cycles ($6.0\,\mu\text{s}$). $165 \times 6.0\,\mu\text{s} \approx 1000\,\mu\text{s} = 1\text{ ms}$.
+- **Outer Loop (`for(i = 0; i < ms; i++)`):** When called with `delay_ms(5000)`, the outer loop repeats this 1 ms delay 5,000 times, resulting in a total elapsed duration of $5,000\text{ ms} = 5.0\text{ seconds}$.
+
+#### Q0.4: What does `TRISB = 0x00;` mean? Why is `0` written for output and not `1`?
+**Answer:**  
+- **What it means:** Configures all 8 pins of Port B (`RB0` through `RB7`) as digital outputs.
+- **Why `0` is Output:** In PIC architecture, `TRIS` stands for Tri-State. Microchip established the convention:
+  - `0` represents **O**utput (low-impedance push-pull driver enabled).
+  - `1` represents **I**nput (driver disabled, high-impedance receiver enabled).
+
+#### Q0.5: Why did you write `PORTB = 0x00;` before the `while(1)` loop?
+**Answer:**  
+- **What it means:** Writes logic LOW ($0\text{V}$) to all pins of Port B.
+- **Why we wrote it:** Power-on reset states of microcontroller pins can be unpredictable. Setting `PORTB = 0x00;` guarantees that all three traffic lights (Red, Yellow, Green) start in a deterministic **OFF** state before the signaling cycle starts.
+
+#### Q0.6: What does `while(1)` mean? Why can't a traffic light program ever terminate?
+**Answer:**  
+- **What it means:** An infinite, non-terminating loop (`1` evaluates to Boolean TRUE in C).
+- **Why it must never terminate:** A municipal traffic signal must operate continuously $24/7$. If an embedded program were allowed to exit `main()`, the CPU would encounter undefined memory, crash, or freeze in an indeterminate state, leaving the intersection completely uncontrolled and hazardous.
+
+#### Q0.7: Why did you write `PORTB = 0x01;` for the Red light? What does `0x01` mean in binary?
+**Answer:**  
+- **Binary Equivalent:** `0x01` is `0000 0001` in binary.
+- **Pin Mapping:** 
+  - Bit 0 (`RB0`) = `1` ($+5\text{V}$, Anode of Red LED is energized $\to$ **Red ON**).
+  - Bit 1 (`RB1`) = `0` ($0\text{V}$, Yellow LED is grounded $\to$ **Yellow OFF**).
+  - Bit 2 (`RB2`) = `0` ($0\text{V}$, Green LED is grounded $\to$ **Green OFF**).
+
+#### Q0.8: Why did you write `PORTB = 0x04;` for the Green light? Why not `0x03`?
+**Answer:**  
+- **Binary Equivalent:** `0x04` is `0000 0100` in binary.
+- **Pin Mapping:** Bit 2 (`RB2`) is set to `1` (Green LED ON), while Bit 0 (`RB0`) and Bit 1 (`RB1`) are explicitly set to `0` (Red and Yellow OFF).
+- **Why not `0x03`:** `0x03` in binary is `0000 0011`. Writing `0x03` would turn ON both Red (`RB0`) and Yellow (`RB1`) simultaneously while keeping Green OFF, which is an illegal and confusing traffic state.
+
+#### Q0.9: Why did you write `PORTB = 0x02;` for the Yellow light? What does `0x02` mean in binary?
+**Answer:**  
+- **Binary Equivalent:** `0x02` is `0000 0010` in binary.
+- **Pin Mapping:** Bit 1 (`RB1`) = `1` (Yellow LED ON), while Bit 0 (`RB0` - Red) = `0` and Bit 2 (`RB2` - Green) = `0`.
+
+#### Q0.10: Why did you write full-byte values to `PORTB` (e.g. `PORTB = 0x04;`) instead of modifying single pins (e.g. `PORTBbits.RB2 = 1;`)?
+**Answer:**  
+Writing to the entire port byte `PORTB = 0x04;` is an **atomic operation** executed in a single instruction cycle. It turns OFF the previously active light and turns ON the new light in the exact same clock edge ($0.5\,\mu\text{s}$). If you used bit-level manipulation:
+```c
+PORTBbits.RB0 = 0; // Turn off Red
+PORTBbits.RB2 = 1; // Turn on Green
+```
+There would be a brief multi-cycle intermediate state where both lights might flicker or intermediate reads could trigger Read-Modify-Write (RMW) glitches. Writing the full byte guarantees that only one light is ever physically active at any instant.
+
+#### Q0.11: Why is the delay for Yellow set to 2000 ms (`delay_ms(2000)`), while Red and Green are 5000 ms (`delay_ms(5000)`)?
+**Answer:**  
+This models real-world traffic dynamics:
+- Red and Green are the primary vehicular transit phases, requiring longer durations (5 seconds in simulation; 30–60 seconds in real life) to allow traffic queues to clear.
+- Yellow is strictly a transition/warning clearance interval, requiring only a brief duration (2 seconds in simulation; 3–5 seconds in real life) to notify drivers that the right-of-way has ended.
+
+---
+
 ### Level 1: Fundamental / Conceptual Questions ("What & Why")
 
 #### Q1.1: What is a Finite State Machine (FSM), and why is it used to model traffic lights?

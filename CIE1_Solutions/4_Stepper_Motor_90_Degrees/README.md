@@ -162,6 +162,83 @@ void main(void) {
 
 ## 6. Comprehensive Viva Voce & Oral Examination Guide
 
+### Level 0: Fundamental Line-by-Line Code Breakdown ("What Does This Line Mean & Why Did You Write It?")
+
+#### Q0.1: Why did you write `#include <p18f4550.h>`? What does it provide, and what happens if you omit it?
+**Answer:**  
+- **What it means:** A C preprocessor directive that imports the hardware register definition header for the PIC18F4550 microcontroller.
+- **Why we wrote it:** It defines the hardware addresses for `TRISB` and `PORTB`. Without this include, compiling `TRISB = 0x00;` or `PORTB = 0x00;` results in fatal "undefined symbol" errors.
+
+#### Q0.2: What do `#pragma config FOSC = HS`, `WDT = OFF`, `LVP = OFF` do?
+**Answer:**  
+- **`FOSC = HS`:** Selects High-Speed Crystal Oscillator mode ($8\text{ MHz}$).
+- **`WDT = OFF`:** Turns OFF the Watchdog Timer to prevent unprompted watchdog resets during the 1-second holding delays.
+- **`LVP = OFF`:** Disables Low-Voltage ICSP programming, releasing pin `RB5` from programming duty to standard digital I/O.
+
+#### Q0.3: What does `void delay_ms(unsigned int ms)` do? Why is it fundamental to stepper motor operation?
+**Answer:**  
+- **What it does:** Generates a software delay proportional to `ms` using nested decrement loops calibrated for 8 MHz ($1\text{ ms}$ per count).
+- **Why fundamental to stepper motors:** A stepper motor cannot advance instantaneously. Each step requires time for the rotor magnetic field to align with the energized stator coils. `delay_ms()` establishes the step rate (frequency). Changing the delay value directly modulates the motor's rotational speed (RPM).
+
+#### Q0.4: Why did you declare `unsigned char cw_seq[] = {0x09, 0x0C, 0x06, 0x03};`? Where do these 4 exact numbers come from?
+**Answer:**  
+- **`unsigned char`:** An 8-bit unsigned type ($1\text{ byte}$), matching the 8-bit width of `PORTB`.
+- **Derivation of the 4 values (2-Phase Full-Step Excitation):**
+  - Stator coils A, B, C, D are connected to pins `RB0`, `RB1`, `RB2`, `RB3`.
+  - **`0x09`** = `0000 1001` (Coil D and Coil A energized)
+  - **`0x0C`** = `0000 1100` (Coil D and Coil C energized)
+  - **`0x06`** = `0000 0110` (Coil C and Coil B energized)
+  - **`0x03`** = `0000 0011` (Coil B and Coil A energized)  
+  At each step, two adjacent coils are energized, creating a composite magnetic stator flux vector that rotates spatially by $90^\circ$ electrical, pulling the permanent-magnet rotor along with it.
+
+#### Q0.5: Why did you declare `unsigned char ccw_seq[] = {0x03, 0x06, 0x0C, 0x09};`? Why is it the exact reverse of `cw_seq`?
+**Answer:**  
+To rotate the rotor in the reverse (anti-clockwise) direction, the stator magnetic vector must rotate in the opposite spatial direction. Reversing the order of coil excitation (`0x03` $\to$ `0x06` $\to$ `0x0C` $\to$ `0x09`) shifts the magnetic field counter-clockwise, forcing the rotor teeth to follow in reverse.
+
+#### Q0.6: Why did you write `int steps_for_90 = 50;`? Show the exact formula.
+**Answer:**  
+- **Standard Stepper Motor Step Angle ($\theta_s$):** $1.8^\circ$ per full step.
+- **Formula:**
+  $$\text{Steps} = \frac{\text{Target Angle}}{\text{Step Angle}} = \frac{90^\circ}{1.8^\circ} = 50\text{ steps}$$
+Therefore, the motor must execute exactly 50 sequential step transitions to sweep an angular displacement of $90^\circ$ (one quadrant of a full circle).
+
+#### Q0.7: Why did you declare `int i;` at the beginning of `main()`?
+**Answer:**  
+In ANSI C89 (the standard enforced by the Microchip MPLAB C18 compiler), all local variables within a block must be declared before any executable C statements. Declaring `for(int i = 0; ...)` mid-block triggers a syntax error in C18.
+
+#### Q0.8: What do `TRISB = 0x00;` and `PORTB = 0x00;` do?
+**Answer:**  
+- **`TRISB = 0x00;`:** Sets all 8 pins of Port B as digital outputs (`0` = Output), enabling the microcontroller to drive the ULN2003A inputs.
+- **`PORTB = 0x00;`:** Drives all Port B pins to logic LOW ($0\text{V}$), turning off all Darlington transistor pairs in the ULN2003A and ensuring that no motor coils draw current on power-up.
+
+#### Q0.9: What does `while(1)` mean?
+**Answer:**  
+It creates an infinite loop. `1` evaluates to Boolean TRUE, meaning the microcontroller continuously alternates between $90^\circ$ CW and $90^\circ$ CCW rotation indefinitely until power is turned off.
+
+#### Q0.10: In `PORTB = cw_seq[i % 4];`, what does the `%` (modulo) operator do? Why is `% 4` used?
+**Answer:**  
+- **What `%` does:** In C, `%` calculates the integer remainder of division.
+- **Why `% 4` is used:** Our full-step excitation sequence has 4 states (indices $0, 1, 2, 3$). But to achieve $90^\circ$, loop counter `i` runs from $0$ up to $49$ ($50\text{ iterations}$).
+- As `i` increments:
+  - `i = 0` $\implies 0 \% 4 = 0 \implies \text{cw\_seq}[0] = 0x09$
+  - `i = 1` $\implies 1 \% 4 = 1 \implies \text{cw\_seq}[1] = 0x0C$
+  - `i = 2` $\implies 2 \% 4 = 2 \implies \text{cw\_seq}[2] = 0x06$
+  - `i = 3` $\implies 3 \% 4 = 3 \implies \text{cw\_seq}[3] = 0x03$
+  - `i = 4` $\implies 4 \% 4 = 0 \implies \text{cw\_seq}[0] = 0x09$ (wraps around!)  
+The `% 4` operator cleanly wraps the index so that the 4-step sequence repeats smoothly 12.5 times ($12.5 \times 4 = 50\text{ steps}$).
+
+#### Q0.11: Why is there `delay_ms(100);` after every single step excitation? What does this 100 ms control?
+**Answer:**  
+- **What it controls:** It sets the **inter-step interval**, which determines the motor's stepping rate and rotational speed.
+- **Why 100 ms:** At $100\text{ ms}$ per step, the motor steps at $f = \frac{1}{0.1\text{ s}} = 10\text{ steps/sec}$, yielding a rotational speed of $\frac{10 \times 60}{200} = 3\text{ RPM}$. This slow speed allows students and evaluators to clearly observe each individual step in Proteus and ensures the rotor does not skip steps due to rotational inertia.
+
+#### Q0.12: Why is there a separate `delay_ms(1000);` outside the step loop? What does it achieve physically on the motor shaft?
+**Answer:**  
+- **What it achieves (Dwell / Settle Time):** When the motor finishes stepping through $50\text{ steps}$ ($90^\circ$), `delay_ms(1000)` pauses the firmware for 1 full second.
+- **Physical consequence:** During this pause, the last energized coils (`cw_seq[49 % 4] = cw_seq[1] = 0x0C`) remain active. This applies active **Holding Torque**, locking the motor shaft firmly at the exact $90^\circ$ angular position and absorbing any residual mechanical oscillations before changing direction to CCW.
+
+---
+
 ### Level 1: Fundamental / Conceptual Questions ("What & Why")
 
 #### Q1.1: What is a stepper motor, and why is it categorized as an open-loop positioning actuator?

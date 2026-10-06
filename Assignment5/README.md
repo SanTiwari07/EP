@@ -10,10 +10,6 @@
 
 ## 1. Problem Statement
 Interface a 16x2 LCD module to PIC18F4550 microcontroller and write a program in Embedded C to display characters on the 16x2 LCD display.
-
-> [!TIP]
-> View interactive vector schematic and run the live web simulator in **[`interfacing_diagrams.html`](../interfacing_diagrams.html)**.
-
 ---
 
 ## 2. Objectives

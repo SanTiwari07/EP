@@ -24,10 +24,6 @@ All implementations follow strict embedded engineering standards:
 - Microchip C18 compatibility with USB HID bootloader vector relocation for PIC18F4550.
 - Calibrated hardware delays and calculation formulas included in comments.
 
-> [!TIP]
-> **Deployable Laboratory Web Portal & Schematics Tool:**  
-> Open **[`index.html`](index.html)** in any browser or deploy directly via GitHub Pages / Netlify / Vercel to explore the complete interactive laboratory portal, publication-quality vector schematics, live hardware simulators, mathematical derivations, and embedded C source code for all experiments. (Also available as standalone schematics in **[`interfacing_diagrams.html`](interfacing_diagrams.html)**).
-
 ---
 
 ## Course Experiments & Directory Map

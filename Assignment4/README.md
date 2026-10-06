@@ -10,10 +10,6 @@
 
 ## 1. Problem Statement
 Design and develop a PWM-based motor speed control system using CCP PWM mode using PIC18F4550 microcontroller.
-
-> [!TIP]
-> View interactive vector schematic and run the live web simulator in **[`interfacing_diagrams.html`](../interfacing_diagrams.html)**.
-
 ---
 
 ## 2. Objectives

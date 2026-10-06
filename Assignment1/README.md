@@ -14,10 +14,6 @@ Develop and implement embedded C programs for the 8051 (AT89C51 / AT89S52) micro
 - **Part B:** Perform up/down counting of two-digit hexadecimal numbers (0x00 to 0xFF) and display the count on LEDs connected to PORT P1.
 - **Part C:** Perform up/down counting of two-digit BCD numbers (00 to 99) and display the result on LEDs connected to PORT P1.
 - **Part D:** Implement LED Chasing (ring shift left and right) across the 8 LEDs connected to PORT P1.
-
-> [!TIP]
-> View interactive vector schematic and run the live web simulator in **[`interfacing_diagrams.html`](../interfacing_diagrams.html)**.
-
 ---
 
 ## 2. Objectives

@@ -12,10 +12,6 @@
 Interface Pushbuttons, LEDs, Relay, and Buzzer to PIC18F4550 microcontroller. Write a program in Embedded C to interact with peripherals as follows:
 - **Part a:** LEDs start chasing from left to right (RD0 to RD7) and turn **ON** the Relay and Buzzer whenever pushbutton 1 (**Switch SW0 / RB1**) is pressed.
 - **Part b:** LEDs start chasing from right to left (RD7 to RD0) and turn **OFF** the Relay and Buzzer whenever pushbutton 2 (**Switch SW1 / RB0**) is pressed.
-
-> [!TIP]
-> View interactive vector schematic and run the live web simulator in **[`interfacing_diagrams.html`](../interfacing_diagrams.html)**.
-
 ---
 
 ## 2. Objectives

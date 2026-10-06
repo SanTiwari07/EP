@@ -95,12 +95,12 @@ All implementations follow strict embedded engineering standards:
 
 ## Continuous Internal Evaluation (CIE) Solutions
 
-In addition to standard course experiments, the `CIE1_Solutions/` directory contains complete projects with Proteus schematic simulation designs (`.pdsprj`), C18 source files, and engineering reports:
+In addition to standard course experiments, the [`CIE1_Solutions/`](CIE1_Solutions/README.md) directory contains complete standalone projects with Proteus schematic simulation designs (`.pdsprj`), C18 source files, engineering reports, and exhaustive Viva Voce question banks:
 
-1. **7-Segment Display Counter (`CIE1_Solutions/1_7_Segment_Display/`):** Two-digit multiplexed common-cathode display counting from 00 to 99 on `PORTB` and `PORTD`.
-2. **Smart Traffic Light Controller (`CIE1_Solutions/2_Smart_Traffic_Light/`):** Four-phase automated traffic junction sequencing with safety clearance delays.
-3. **Home Automation Subsystem (`CIE1_Solutions/3_Home_Automation/`):** Multi-channel appliance switching with pushbutton inputs and status indicators.
-4. **Stepper Motor 90-Degree Stepper (`CIE1_Solutions/4_Stepper_Motor_90_Degrees/`):** Precise angular positioning control using four-step unipolar excitation sequences.
+1. **[7-Segment Display Counter (`CIE1_Solutions/1_7_Segment_Display/`)](CIE1_Solutions/1_7_Segment_Display/README.md):** Two-digit common-cathode display counting from 00 to 99 on `PORTB` and `PORTD`.
+2. **[Smart Traffic Light Controller (`CIE1_Solutions/2_Smart_Traffic_Light/`)](CIE1_Solutions/2_Smart_Traffic_Light/README.md):** Three-phase automated traffic junction sequencing (Red 5s, Green 5s, Yellow 2s) on `PORTB`.
+3. **[Home Automation Subsystem (`CIE1_Solutions/3_Home_Automation/`)](CIE1_Solutions/3_Home_Automation/README.md):** Multi-channel appliance switching with logic state inputs on `PORTB` and isolated output drivers on `PORTD`.
+4. **[Stepper Motor 90-Degree Rotation (`CIE1_Solutions/4_Stepper_Motor_90_Degrees/`)](CIE1_Solutions/4_Stepper_Motor_90_Degrees/README.md):** Precise angular positioning control ($\pm 90^\circ$, 50 steps) using 4-step unipolar excitation via ULN2003A driver.
 
 ---
 

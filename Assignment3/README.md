@@ -87,27 +87,22 @@ Using **Prescaler = 1:16**:
 - **Number of Counts Needed ($n$):**
   $$n = \frac{T_d}{T_{eq}} = \frac{50,000\ \mu\text{s}}{\frac{4}{3}\ \mu\text{s}} = \frac{50,000 \times 3}{4} = 37,500\text{ counts}$$
 - **Initial 16-Bit Register Count:**
-  $$\text{Count} = 65,536 - n = 65,536 - 37,500 = 28,036$$
-- **Hexadecimal Conversion:**
-  $$28,036 \div 256 = 109\ (\text{Remainder } 132)$$
-  $$109_{10} = \text{0x6D} \implies \mathbf{TMR0H = \text{0x6D}}$$
-  $$132_{10} = \text{0x84} \implies \mathbf{TMR0L = \text{0x84}}$$
-  $$\mathbf{\text{Initial Value} = \text{0x6D84}}$$
+  $$\text{Count} = \text{0x6D82} \quad (28,034_{10})$$
+  $$\mathbf{TMR0H = \text{0x6D}}, \quad \mathbf{TMR0L = \text{0x82}}$$
 
 ---
 
 ## 6. Algorithm
-1. Configure Port pin `RB0` as digital output and initialize its output value to `0`.
-2. Load value `0x03` into `T0CON` to configure Timer 0 in 16-bit mode, internal instruction clock ($F_{osc}/4$), and 1:16 prescaler.
-3. Load registers `TMR0H` first (`0x6D`) and then `TMR0L` (`0x84`) with calculated initial count values.
-4. Enable the Timer 0 Interrupt (`INTCONbits.TMR0IE = 1`) and Global Interrupt (`INTCONbits.GIE = 1`). Clear initial interrupt flag (`INTCONbits.TMR0IF = 0`).
-5. Start the timer by setting `T0CONbits.TMR0ON = 1`.
-6. Write the Interrupt Service Routine (ISR) at relocated interrupt vector `0x1008` containing:
-   - Check if `TMR0IF == 1`.
+1. Configure `ADCON1 = 0x0F` (digital I/O) and enable PORTB pull-ups (`INTCON2bits.RBPU = 0`).
+2. Configure Port pin `RB0` as digital output (`TRISBbits.TRISB0 = 0`) and initialize its output value to `0` (`PORTBbits.RB0 = 0`).
+3. Load value `0x03` into `T0CON` to configure Timer 0 in 16-bit mode, internal instruction clock ($F_{osc}/4$), and 1:16 prescaler.
+4. Load registers `TMR0H = 0x6D` and `TMR0L = 0x82`.
+5. Configure interrupts: `INTCONbits.GIE = 1`, `INTCONbits.TMR0IF = 0`, `INTCONbits.TMR0IE = 1`.
+6. Start the timer by setting `T0CONbits.TMR0ON = 1` and wait in `while(1);`.
+7. In the Interrupt Service Routine (`timer_isr`) vectored from `0x1008`:
+   - Reload `TMR0H = 0x6D` and `TMR0L = 0x82`.
    - Toggle the PORT pin `RB0` (`PORTBbits.RB0 = ~PORTBbits.RB0`).
-   - Clear the `TMR0IF` flag for the next cycle.
-   - Reload `TMR0H` (`0x6D`) first, then `TMR0L` (`0x84`).
-7. Observe and verify the 10 Hz square wave (100 ms period, 50 ms ON / 50 ms OFF) on the DSO connected to pin `RB0`.
+   - Clear the `TMR0IF` flag (`INTCONbits.TMR0IF = 0`).
 
 ---
 

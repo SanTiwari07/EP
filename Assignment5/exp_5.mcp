@@ -37,8 +37,8 @@ file_001=no
 file_002=no
 [FILE_INFO]
 file_000=exp5.c
-file_001=C:\Users\sansk\Desktop\Electronics\MPLab\vector_relocate.h
-file_002=C:\Users\sansk\Desktop\Electronics\MPLab\rm18f4550.lkr
+file_001=vector_relocate.h
+file_002=..\rm18f4550.lkr
 [SUITE_INFO]
 suite_guid={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
 suite_state=

@@ -55,23 +55,23 @@ All implementations follow strict embedded engineering standards:
 - Compiler: Microchip C18 (`p18f4550.h`)
 - Description: Demonstrates digital input and output control. Active-low pushbuttons on `RB0` and `RB1` with internal weak pull-ups trigger switching of a relay (`RC1`), a buzzer (`RC2`), and cascading LED chase patterns on `PORTD`. Integrated with USB HID bootloader relocation table (`vector_relocate.h`).
 
-### Assignment 3: PIC18F4550 Timer 0 Interrupt Square Wave Generation (10 Hz)
+### Assignment 3: PIC18F4550 Timer 0 Interrupt Square Wave Generation
 - Location: `Assignment3/`
 - Target: PIC18F4550
 - Compiler: Microchip C18
-- Description: Generates a calibrated 10 Hz square wave on `PORTBbits.RB0` using the 16-bit Timer 0 overflow interrupt. The High Priority Interrupt vector is relocated to address `0x1008` as specified in the PICT EPL syllabus. Calculations derive exact register values (`TMR0H = 0x6D`, `TMR0L = 0x84`, corresponding to 37,500 counts for a 50 ms half-cycle delay) based on a 48 MHz oscillator frequency and 1:16 prescaler (`T0CON = 0x03`).
+- Description: Generates a square wave on `PORTBbits.RB0` using the 16-bit Timer 0 overflow interrupt (`timer_isr`). The High Priority Interrupt vector is relocated to address `0x1008` and reloads `TMR0H = 0x6D`, `TMR0L = 0x82` with `T0CON = 0x03`.
 
-### Assignment 4: PIC18F4550 CCP PWM DC Motor Speed Control (4 kHz)
+### Assignment 4: PIC18F4550 CCP PWM DC Motor Speed Control
 - Location: `Assignment4/`
 - Target: PIC18F4550
 - Compiler: Microchip C18
-- Description: Implements motor speed modulation using the Capture/Compare/PWM (CCP1) hardware module on pin `RC2` driving an L293D H-bridge. Configures Timer 2 (`PR2 = 186`, 1:16 prescaler at 48 MHz) to establish a 4 kHz PWM carrier frequency, and dynamically adjusts the 10-bit duty cycle (`CCPR1L` and `CCP1CON<5:4>`) through 20%, 40%, 60%, 80%, and 100% speed steps as derived in the PICT EPL manual.
+- Description: Implements motor speed modulation using the Capture/Compare/PWM (`CCP1`) hardware module on pin `RC2` with direction control on `PORTDbits.RD5` and `PORTDbits.RD6`. Configures Timer 2 (`PR2 = 0xBA`, `T2CON = 0x07`, `CCP1CON = 0x0C`) and steps `CCPR1L` through `0x25`, `0x4B`, `0x25`, and `0x94` with `MSdelay(2000)`.
 
-### Assignment 5: PIC18F4550 16x2 Alphanumeric LCD Interfacing
+### Assignment 5: PIC18F4550 Timer 0 Polling Delay (`todelay`)
 - Location: `Assignment5/`
 - Target: PIC18F4550
 - Compiler: Microchip C18
-- Description: Implements an 8-bit parallel interface driver for standard HD44780-compatible 16x2 LCD modules. Uses `PORTD` as the 8-bit bidirectional data bus and `PORTE` for control signals (`RE0 = RS`, `RE1 = RW`, `RE2 = EN`). Implements command dispatching, initialization routines, and character string rendering.
+- Description: Toggles `PORTD` between `0x00` and `0xFF` using a hardware Timer 0 polling delay routine `todelay()` (`T0CON = 0x08`, `TMR0H = 0xFB`, `TMR0L = 0x4C`, polling `INTCONbits.TMR0IF`).
 
 ### Assignment 6: PIC18F4550 Real-Time Temperature Monitoring (LM35 + LCD)
 - Location: `Assignment6/`

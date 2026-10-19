@@ -2,7 +2,7 @@
 MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
 Version=1.0
 [File000]
-Location=C:\Users\sansk\Desktop\EP CIE\CIE_Solutions\4_Stepper_Motor_90_Degrees\main.o
+Location=C:\Users\sansk\Desktop\Electronics\EPLabWork\CIE1_Solutions\4_Stepper_Motor_90_Degrees\main.o
 Folder=Intermediary
 DeviceName=PIC18F4550
 LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
@@ -15,7 +15,7 @@ ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
 TraceCmdString=
 DebugOptions=-D__DEBUG
 [File001]
-Location=C:\Users\sansk\Desktop\EP CIE\CIE_Solutions\4_Stepper_Motor_90_Degrees\Q3.cof
+Location=C:\Users\sansk\Desktop\Electronics\EPLabWork\CIE1_Solutions\4_Stepper_Motor_90_Degrees\Q3.cof
 Folder=Output
 DeviceName=PIC18F4550
 LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
@@ -28,7 +28,7 @@ ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /
 TraceCmdString=
 DebugOptions=/z__MPLAB_DEBUG=1
 [File002]
-Location=C:\Users\sansk\Desktop\EP CIE\CIE_Solutions\4_Stepper_Motor_90_Degrees\Q3.hex
+Location=C:\Users\sansk\Desktop\Electronics\EPLabWork\CIE1_Solutions\4_Stepper_Motor_90_Degrees\Q3.hex
 Folder=Output
 DeviceName=PIC18F4550
 LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}

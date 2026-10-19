@@ -16,7 +16,7 @@ void main(void) {
     unsigned char cw_seq[]  = {0x09, 0x0C, 0x06, 0x03};
     unsigned char ccw_seq[] = {0x03, 0x06, 0x0C, 0x09}; 
 
-    int steps_for_360 = 180; // assuming 1.8 degrees per step
+    int steps_for_360 = 200; 
     int i;
     
     TRISB = 0x00;

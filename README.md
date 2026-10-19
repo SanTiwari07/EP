@@ -79,11 +79,11 @@ All implementations follow strict embedded engineering standards:
 - Compiler: Microchip C18
 - Description: Interfaces an analog LM35 precision temperature sensor to analog channel AN0 (`RA0`). Configures the 10-bit internal ADC (`ADCON0`, `ADCON1`, `ADCON2`) with 2 TAD acquisition time and Fosc/32 conversion clock. The calculated temperature in degrees Celsius is formatted and displayed in real time on the 16x2 LCD.
 
-### Assignment 7: ESP32 LED Blink & Wi-Fi IoT Connectivity
+### Assignment 7: ESP32 LED Control Using Wi-Fi & Blynk IoT
 - Location: `Assignment7/`
 - Target: ESP32 Dev Module (ESP-WROOM-32)
-- Environment: Arduino IDE / ESP-IDF C++
-- Description: Configures the ESP32 in Station mode to establish a Wi-Fi link with a local network or mobile hotspot. The onboard blue LED (`GPIO 2`) blinks rapidly during connection negotiation, stays solid on successful association, and transitions to a diagnostic heartbeat rhythm. Diagnostic network parameters (IP address, RSSI) are streamed over UART at 115200 baud.
+- Environment: Arduino IDE (`WiFi.h`, `BlynkSimpleEsp32.h`)
+- Description: Connects the ESP32 to Wi-Fi and the Blynk Cloud (`Blynk.begin`) to remotely control the onboard LED (`GPIO 2`) via virtual pin `V0` (`BLYNK_WRITE(V0)`), logging connection status and LED state over UART at 115200 baud.
 
 ### Assignment 8: STM32 GPIO & Hardware Timer Performance Optimization
 - Location: `Assignment8/`

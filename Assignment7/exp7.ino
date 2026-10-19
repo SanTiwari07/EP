@@ -1,70 +1,43 @@
-/*
- * Experiment 7: Develop an ESP32-based LED blinking program and
- *               establish Wi-Fi connectivity for IoT applications.
- *
- * Hardware: ESP32 Development Board (ESP-WROOM-32)
- * Onboard LED: GPIO 2
- */
+#define BLYNK_TEMPLATE_ID "TMPL31SA8UcuC"
+#define BLYNK_TEMPLATE_NAME "ESP32 LED WIFI"
+#define BLYNK_AUTH_TOKEN "46Nk2BCyeszQUGdqiA3tP0g75qo6UUlQ"
 
 #include <WiFi.h>
+#include <BlynkSimpleEsp32.h>
+
+char ssid[] = "vadapav";
+char pass[] = "mns12345";
 
 #define LED_PIN 2
 
-/* Replace with your network details or mobile hotspot */
-const char* ssid     = "College_WiFi";
-const char* password = "Password123";
+BLYNK_WRITE(V0) {
+    int value = param.asInt();
+    digitalWrite(LED_PIN, value);
+    Serial.print("LED: ");
+    Serial.println(value ? "ON" : "OFF");
+}
 
-void setup()
-{
+void setup() {
     Serial.begin(115200);
-    delay(1000);
-
     pinMode(LED_PIN, OUTPUT);
     digitalWrite(LED_PIN, LOW);
 
-    Serial.println("\n========================================");
-    Serial.println("  ESP32 LED Blink & Wi-Fi Connectivity  ");
-    Serial.println("========================================");
+    Serial.println("Connecting to Wi-Fi...");
+    Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
 
-    WiFi.mode(WIFI_STA);
-    Serial.print("Connecting to Wi-Fi SSID: ");
-    Serial.println(ssid);
-    WiFi.begin(ssid, password);
-
-    /* Blink LED rapidly while connecting */
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        digitalWrite(LED_PIN, HIGH);
-        delay(250);
-        digitalWrite(LED_PIN, LOW);
-        delay(250);
-        Serial.print(".");
+    if (WiFi.status() == WL_CONNECTED) {
+        Serial.println("Wi-Fi: CONNECTED");
+    } else {
+        Serial.println("Wi-Fi: NOT CONNECTED");
     }
 
-    Serial.println("\n[SUCCESS] Connected to Wi-Fi!");
-    Serial.print("Assigned IP Address: ");
-    Serial.println(WiFi.localIP());
-    Serial.print("Signal Strength (RSSI): ");
-    Serial.print(WiFi.RSSI());
-    Serial.println(" dBm");
-    Serial.println("========================================\n");
-
-    digitalWrite(LED_PIN, HIGH);
+    if (Blynk.connected()) {
+        Serial.println("Blynk: CONNECTED");
+    } else {
+        Serial.println("Blynk: NOT CONNECTED");
+    }
 }
 
-void loop()
-{
-    if (WiFi.status() == WL_CONNECTED)
-    {
-        digitalWrite(LED_PIN, HIGH);
-        delay(1000);
-        digitalWrite(LED_PIN, LOW);
-        delay(1000);
-    }
-    else
-    {
-        Serial.println("[WARNING] Wi-Fi disconnected! Reconnecting...");
-        WiFi.reconnect();
-        delay(5000);
-    }
+void loop() {
+    Blynk.run();
 }

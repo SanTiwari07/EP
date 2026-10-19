@@ -1,14 +1,14 @@
-#define BLYNK_TEMPLATE_ID "TMPL31SA8UcuC"
+#define BLYNK_TEMPLATE_ID "TMPL3WUlKR7np"
 #define BLYNK_TEMPLATE_NAME "ESP32 LED WIFI"
-#define BLYNK_AUTH_TOKEN "46Nk2BCyeszQUGdqiA3tP0g75qo6UUlQ"
+#define BLYNK_AUTH_TOKEN "aT-t7kVzjb-kPqrNsfeqyO4Z5fXqTFWG"
 
 #include <WiFi.h>
 #include <BlynkSimpleEsp32.h>
 
-char ssid[] = "vadapav";
-char pass[] = "mns12345";
+char ssid[] = "Sample";
+char pass[] = "Password";
 
-#define LED_PIN 2
+#define LED_PIN 23
 
 BLYNK_WRITE(V0) {
     int value = param.asInt();

@@ -36,7 +36,7 @@ All implementations follow strict embedded engineering standards:
 | 4 | [Assignment4](Assignment4/) | PIC18F4550 | Design and develop a PWM based motor speed control system using CCP PWM mode using PIC18F4550 uC. | CCP1CON, PR2, T2CON, Timer 2, 4 kHz PWM, L293D Motor Driver |
 | 5 | [Assignment5](Assignment5/) | PIC18F4550 | Design and implement interfacing of 16x2 LCD module to PIC18FXXXX to display string. | HD44780 8-Bit Interface, Command/Data Sequencing, PORTE Control, PORTD Bus |
 | 6 | [Assignment6](Assignment6/) | PIC18F4550 | Interface and program a temperature sensor with PIC18FXXXX to display real-time readings on an LCD. | LM35, 10-bit ADC (ADCON0/1/2), Channel AN0, Real-Time String Formatting |
-| 7 | [Assignment7](Assignment7/) | ESP32 (ESP-WROOM-32) | Develop an ESP32-based LED blinking program and establish Wi-Fi connectivity for IoT applications. | GPIO 2, WiFi Station Mode, Connection Polling, Serial Diagnostics, IP Reporting |
+| 7 | [Assignment7](Assignment7/) | ESP32 (ESP-WROOM-32) | Develop an ESP32-based LED blinking program and establish Wi-Fi connectivity for IoT applications. | GPIO 23, WiFi Station Mode, Blynk IoT, Virtual Pin V0, Serial Diagnostics |
 | 8 | [Assignment8](Assignment8/) | STM32 (ARM Cortex-M) | Configure and evaluate STM32 GPIO and timer functionalities to optimize system performance. | RCC Clock Enable, GPIO Push-Pull, Hardware Timer TIM2 (PSC, ARR), Non-blocking Delays |
 
 ---
@@ -83,7 +83,7 @@ All implementations follow strict embedded engineering standards:
 - Location: `Assignment7/`
 - Target: ESP32 Dev Module (ESP-WROOM-32)
 - Environment: Arduino IDE (`WiFi.h`, `BlynkSimpleEsp32.h`)
-- Description: Connects the ESP32 to Wi-Fi and the Blynk Cloud (`Blynk.begin`) to remotely control the onboard LED (`GPIO 2`) via virtual pin `V0` (`BLYNK_WRITE(V0)`), logging connection status and LED state over UART at 115200 baud.
+- Description: Connects the ESP32 to Wi-Fi and the Blynk Cloud (`Blynk.begin`) to remotely control an LED (`GPIO 23`) via virtual pin `V0` (`BLYNK_WRITE(V0)`), logging connection status and LED state over UART at 115200 baud.
 
 ### Assignment 8: STM32 GPIO & Hardware Timer Performance Optimization
 - Location: `Assignment8/`
